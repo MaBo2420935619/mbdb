@@ -1,8 +1,13 @@
 package com.ibd.database.utils;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileUtils {
     public static void saveAsFileWriter(String filePath, String content) {
@@ -39,10 +44,7 @@ public class FileUtils {
             BufferedReader br = new BufferedReader(isr);
             String line = "";
             while ((line = br.readLine()) != null) {
-                // 如果 t x t文件里的路径 不包含---字符串       这里是对里面的内容进行一个筛选
-                if (line.lastIndexOf("---") < 0) {
-                    list.add(line);
-                }
+                list.add(line);
             }
             br.close();
             isr.close();
@@ -53,8 +55,28 @@ public class FileUtils {
         }
         return null;
     }
-//    public static void main(String[] args) {
-//        TxtFileUtils.saveAsFileWriter("G://a.txt","123");
-//        TxtFileUtils.saveAsFileWriter("G://a.txt","456");
-//    }
+
+    /**
+     * @param file 文件路径
+     * @param startLine 第n行开始读，Java 下标为 0
+     * @param limit 每次读取的行数
+     * @return
+     */
+    public  static List<String> readFileToLineGoLine(String file , int startLine, int limit) throws IOException {
+        Path path = Paths.get(file);
+        //读取文件
+        Stream<String> linesAll = Files.lines(path);
+
+        List<String> collect = linesAll.skip(startLine)
+                .limit(limit)
+                .collect(Collectors.toList());
+        return collect;
+    }
+    /**
+     * @Description : delete by key
+     * @Author : mabo
+    */
+
+
+
 }

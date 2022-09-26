@@ -24,4 +24,5 @@ public class DefinitionEntity {
      * 备注
      */
     private  String remark;
+
 }

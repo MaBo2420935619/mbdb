@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ibd.database.utils.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,12 @@ public class DefinitionService {
     private static String dataFileName ="//data.mbDB";
 
     public static void createTable(JSONArray array, String tableName){
+        JSONArray table = new JSONArray();
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject jsonObject = array.getJSONObject(i);
+            jsonObject.put("delete","1");
+            table.add(jsonObject);
+        }
         File file = new File(filePath+tableName + definitionFileName);
         file.delete();
         if (!file.exists()) {
@@ -27,7 +34,7 @@ public class DefinitionService {
                 e.printStackTrace();
             }
         }
-        FileUtils.saveAsFileWriter(file.getAbsolutePath(),array.toJSONString());
+        FileUtils.saveAsFileWriter(file.getAbsolutePath(),table.toJSONString());
     }
 
     public static JSONArray getTable(String tableName){
@@ -53,14 +60,10 @@ public class DefinitionService {
             try {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
-                String data="";
+                String data="delete";
                 for (int j = 0; j < collNames.size()    ; j++) {
                     String s = collNames.get(j);
-                    if (data.equals("")){
-                        data=s;
-                    }else {
-                        data+="|"+s;
-                    }
+                    data+="|"+s;
                 }
                 FileUtils.saveAsFileWriter(file.getAbsolutePath(),data);
             } catch (Exception e) {
@@ -69,7 +72,7 @@ public class DefinitionService {
         }
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String data="";
+            String data="0";
             for (int j = 0; j < collNames.size()    ; j++) {
                 String s = collNames.get(j);
                 String string = jsonObject.getString(s);
@@ -84,24 +87,41 @@ public class DefinitionService {
         return jsonArray.size();
     }
 
+//    public static void main(String[] args) {
+//        JSONObject js = new JSONObject();
+//        js.put("primary","true");
+//        js.put("name","userName");
+//        js.put("type","varchar");
+//        js.put("length","10");
+//        js.put("remark","用户姓名");
+//        JSONObject js1 = new JSONObject();
+//        js1.put("primary","false");
+//        js1.put("name","userAge");
+//        js1.put("type","int");
+//        js1.put("length","10");
+//        js1.put("remark","用户年龄");
+//        JSONArray jsonArray = new JSONArray();
+//        jsonArray.add(js);
+//        jsonArray.add(js1);
+//        DefinitionService.createTable(jsonArray,"user");
+//        JSONArray user = DefinitionService.getTable("user");
+//        System.out.println(user);
+//    }
+
     public static void main(String[] args) {
         JSONObject js = new JSONObject();
-        js.put("primary","true");
-        js.put("name","userName");
-        js.put("type","varchar");
-        js.put("length","10");
-        js.put("remark","用户姓名");
+        js.put("delete","0");
+        js.put("userName","张三");
+        js.put("userAge","10");
         JSONObject js1 = new JSONObject();
-        js1.put("primary","false");
-        js1.put("name","userAge");
-        js1.put("type","int");
-        js1.put("length","10");
-        js1.put("remark","用户年龄");
+        js1.put("delete","0");
+        js1.put("userName","王五");
+        js1.put("userAge","12");
         JSONArray jsonArray = new JSONArray();
         jsonArray.add(js);
         jsonArray.add(js1);
-        DefinitionService.createTable(jsonArray,"user");
-        JSONArray user = DefinitionService.getTable("user");
+        int user = DefinitionService.insert(jsonArray, "user");
         System.out.println(user);
     }
+
 }
