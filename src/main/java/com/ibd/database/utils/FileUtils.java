@@ -71,46 +71,5 @@ public class FileUtils {
                 .collect(Collectors.toList());
         return collect;
     }
-    /**
-     * 修改文件内容
-     *
-     * @param fileName
-     * @param oldstr
-     * @param newStr
-     * @return
-     */
-    public static int updateLine(String fileName, String oldstr, String newStr) {
-        RandomAccessFile raf = null;
-        int count=0;
-        try {
-            raf = new RandomAccessFile(fileName, "rw");
-            String line = null;
-            // 记住上一次的偏移量
-            long lastPoint = 0;
-            while ((line = raf.readLine()) != null) {
-                // 文件当前偏移量
-                final long ponit = raf.getFilePointer();
-                // 查找要替换的内容
-                if (line.contains(oldstr)) {
-                    count++;
-                    String str = line.replace(oldstr, newStr);
-                    raf.seek(lastPoint);
-                    raf.writeBytes(str);
-                }
-                lastPoint = ponit;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                raf.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return count;
-    }
-
-
 
 }
