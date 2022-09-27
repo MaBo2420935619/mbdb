@@ -16,6 +16,26 @@ public class DefinitionService {
 
     private static String dataFileName ="//data.mbDB";
 
+    //    public static void main(String[] args) {
+//        JSONObject js = new JSONObject();
+//        js.put("primary","true");
+//        js.put("name","userName");
+//        js.put("type","varchar");
+//        js.put("length","10");
+//        js.put("remark","用户姓名");
+//        JSONObject js1 = new JSONObject();
+//        js1.put("primary","false");
+//        js1.put("name","userAge");
+//        js1.put("type","int");
+//        js1.put("length","10");
+//        js1.put("remark","用户年龄");
+//        JSONArray jsonArray = new JSONArray();
+//        jsonArray.add(js);
+//        jsonArray.add(js1);
+//        DefinitionService.createTable(jsonArray,"user");
+//        JSONArray user = DefinitionService.getTable("user");
+//        System.out.println(user);
+//    }
     public static void createTable(JSONArray array, String tableName){
         JSONArray table = new JSONArray();
         for (int i = 0; i < array.size(); i++) {
@@ -51,7 +71,21 @@ public class DefinitionService {
         }
         return collList;
     }
-
+    //    public static void main(String[] args) {
+//        JSONObject js = new JSONObject();
+//        js.put("delete","0");
+//        js.put("userName","张三");
+//        js.put("userAge","10");
+//        JSONObject js1 = new JSONObject();
+//        js1.put("delete","0");
+//        js1.put("userName","王五");
+//        js1.put("userAge","12");
+//        JSONArray jsonArray = new JSONArray();
+//        jsonArray.add(js);
+//        jsonArray.add(js1);
+//        int user = DefinitionService.insert(jsonArray, "user");
+//        System.out.println(user);
+//    }
     public static int insert(JSONArray jsonArray,String tableName){
         List<String> collNames = getCollNames(tableName);
         File file = new File(filePath+tableName + dataFileName);
@@ -86,51 +120,45 @@ public class DefinitionService {
         return jsonArray.size();
     }
 
-
+    //    public static void main(String[] args) {
+//        int delete = DefinitionService.delete("user", "张三");
+//        System.out.println(delete);
+//    }
     public static int delete(String  tableName, String key){
       return   FileUtils.deleteData(filePath+tableName + dataFileName, key);
     }
-
-    public static int update(String  tableName, String key,JSONObject data){
-        return   FileUtils.deleteData(filePath+tableName + dataFileName, key);
-    }
-//    public static void main(String[] args) {
-//        JSONObject js = new JSONObject();
-//        js.put("primary","true");
-//        js.put("name","userName");
-//        js.put("type","varchar");
-//        js.put("length","10");
-//        js.put("remark","用户姓名");
-//        JSONObject js1 = new JSONObject();
-//        js1.put("primary","false");
-//        js1.put("name","userAge");
-//        js1.put("type","int");
-//        js1.put("length","10");
-//        js1.put("remark","用户年龄");
-//        JSONArray jsonArray = new JSONArray();
-//        jsonArray.add(js);
-//        jsonArray.add(js1);
-//        DefinitionService.createTable(jsonArray,"user");
-//        JSONArray user = DefinitionService.getTable("user");
-//        System.out.println(user);
-//    }
-
-    public static void main(String[] args) {
+    //    public static void main(String[] args) {
 //        JSONObject js = new JSONObject();
 //        js.put("delete","0");
-//        js.put("userName","张三");
+//        js.put("userName","李四");
 //        js.put("userAge","10");
-//        JSONObject js1 = new JSONObject();
-//        js1.put("delete","0");
-//        js1.put("userName","王五");
-//        js1.put("userAge","12");
-//        JSONArray jsonArray = new JSONArray();
-//        jsonArray.add(js);
-//        jsonArray.add(js1);
-//        int user = DefinitionService.insert(jsonArray, "user");
+//        int user = update("user","张三", js);
 //        System.out.println(user);
-        int delete = DefinitionService.delete("user", "张三");
-        System.out.println(delete);
+//    }
+    public static int update(String  tableName, String key,JSONObject data){
+        int update = FileUtils.deleteData(filePath + tableName + dataFileName, key);
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(data);
+        insert(jsonArray,tableName);
+        return update;
+    }
+
+    public static List<String> selectAll(String filePath){
+        List<String> strings = FileUtils.readFile02(filePath);
+
+        List<String> objects = new ArrayList<>();
+        for (int i = 1; i < strings.size(); i++) {
+            String s = strings.get(i);
+            if (s.startsWith("0")){
+                objects.add(s);
+            }
+        }
+        return objects;
+    }
+
+    public static void main(String[] args) {
+        List<String> strings = selectAll(filePath + "user" + dataFileName);
+        System.out.println(strings);
     }
 
 }
