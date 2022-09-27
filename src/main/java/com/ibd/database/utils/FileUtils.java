@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -70,6 +71,53 @@ public class FileUtils {
                 .limit(limit)
                 .collect(Collectors.toList());
         return collect;
+    }
+    /**
+     * delete data
+     * @param fileName
+     * @param oldstr
+     * @return
+     */
+    public static int deleteData(String fileName, String oldstr) {
+        RandomAccessFile raf = null;
+        int count=0;
+        try {
+            raf = new RandomAccessFile(fileName, "rw");
+            // 记住上一次的偏移量
+            long lastPoint = 0;
+            String line= new String(raf.readLine().getBytes("iso-8859-1"));
+            while (line != null) {
+                // 文件当前偏移量
+                final long ponit = raf.getFilePointer();
+                // 查找要替换的内容
+                boolean update=false;
+                if (line.contains(oldstr)) {
+                    count++;
+                    //delete
+                    String str = line.replaceFirst("0", "1");
+                    raf.seek(lastPoint);
+                    raf.write(str.getBytes());
+                }
+                lastPoint = ponit;
+                String s = raf.readLine();
+                if (s!=null){
+                    line= new String(s.getBytes("iso-8859-1"));
+                }else {
+                    line=null;
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                raf.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return count;
     }
 
 }

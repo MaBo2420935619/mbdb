@@ -86,6 +86,14 @@ public class DefinitionService {
         return jsonArray.size();
     }
 
+
+    public static int delete(String  tableName, String key){
+      return   FileUtils.deleteData(filePath+tableName + dataFileName, key);
+    }
+
+    public static int update(String  tableName, String key,JSONObject data){
+        return   FileUtils.deleteData(filePath+tableName + dataFileName, key);
+    }
 //    public static void main(String[] args) {
 //        JSONObject js = new JSONObject();
 //        js.put("primary","true");
@@ -108,22 +116,21 @@ public class DefinitionService {
 //    }
 
     public static void main(String[] args) {
-        JSONObject js = new JSONObject();
-        js.put("delete","0");
-        js.put("userName","张三");
-        js.put("userAge","10");
-        JSONObject js1 = new JSONObject();
-        js1.put("delete","0");
-        js1.put("userName","王五");
-        js1.put("userAge","12");
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.add(js);
-        jsonArray.add(js1);
-        int user = DefinitionService.insert(jsonArray, "user");
-        System.out.println(user);
-
-//        boolean b= FileUtils.update("data//user//data.mbDB","王五","123");
-//        System.out.println(b);
+//        JSONObject js = new JSONObject();
+//        js.put("delete","0");
+//        js.put("userName","张三");
+//        js.put("userAge","10");
+//        JSONObject js1 = new JSONObject();
+//        js1.put("delete","0");
+//        js1.put("userName","王五");
+//        js1.put("userAge","12");
+//        JSONArray jsonArray = new JSONArray();
+//        jsonArray.add(js);
+//        jsonArray.add(js1);
+//        int user = DefinitionService.insert(jsonArray, "user");
+//        System.out.println(user);
+        int delete = DefinitionService.delete("user", "张三");
+        System.out.println(delete);
     }
 
 }
