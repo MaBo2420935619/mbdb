@@ -3,9 +3,7 @@ package com.ibd.database.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ibd.database.service.DefinitionService;
-import com.ibd.database.utils.FileUtils;
 import com.ibd.database.utils.RandUtils;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
