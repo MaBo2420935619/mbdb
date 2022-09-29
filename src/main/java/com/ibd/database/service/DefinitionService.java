@@ -230,9 +230,9 @@ public class DefinitionService {
         return null;
     }
 
-//    public static void main(String[] args) {
-//        createIndexByPrimary("user1");
-//    }
+    public static void main(String[] args) {
+        createIndexByPrimary("user1");
+    }
 
     public static void createIndexByPrimary(String tableName) {
         int primaryPosition = getPrimaryPosition(tableName);
@@ -245,8 +245,9 @@ public class DefinitionService {
                 String ss1 = split1[primaryPosition+1];
                 String[] split2 = s2.split("\\|");
                 String ss2 = split2[primaryPosition+1];
-                int i = ss1.compareTo(ss2);
-                return i;
+                int integer = Integer.parseInt(ss1);
+                int integer2 = Integer.parseInt(ss2);
+                return integer-integer2;
             }
         });
         List<String> strings1 = FileUtils.readFileToLineGoLine(filePath + tableName + dataFileName, 0, 1);
