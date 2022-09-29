@@ -195,7 +195,7 @@ public class DefinitionService {
         return objects;
     }
 
-    public static List<String> getValueByLike(String tableName, String value){
+    public static List<String> selectValueByLike(String tableName, String value){
         return FileUtils.getValueByLike(filePath + tableName+ dataFileName,value);
     }
     public static JSONObject  getIndex(String tableName){
@@ -204,12 +204,7 @@ public class DefinitionService {
         return JSONObject.parseObject(s);
     }
 
-    public static String selectByPrimaryKey(String tableName,String key) throws IOException {
-        JSONObject jsonObject = getIndex(tableName);
-        int line = jsonObject.getInteger(key);
-        List<String> strings1 = FileUtils.readFileToLineGoLine(filePath + tableName + dataFileName, line+1, 1);
-        return strings1.get(0);
-    }
+
 
     public static String selectByPrimaryByAll(String tableName,String value) throws IOException {
         String line="";
@@ -230,12 +225,13 @@ public class DefinitionService {
         return null;
     }
 
-    public static void main(String[] args) {
-        createIndexByPrimary("user1");
-    }
+//    public static void main(String[] args) {
+//        createIndexByPrimary("user1");
+//    }
 
     public static void createIndexByPrimary(String tableName) {
         int primaryPosition = getPrimaryPosition(tableName);
+        String primary = getPrimary(tableName);
         List<String> strings =selectAll("user1");
         //按照字符串的长度升序排序
         Collections.sort(strings, new Comparator<String>() {
@@ -252,16 +248,108 @@ public class DefinitionService {
         });
         List<String> strings1 = FileUtils.readFileToLineGoLine(filePath + tableName + dataFileName, 0, 1);
         FileUtils.saveAsFileWriter(filePath+tableName+dataFileName,strings1.get(0),false);
-        JSONObject jsonObject = new JSONObject();
+        int count=0;
+        for (int i = 0; i < strings.size(); i++) {
+            String s = strings.get(i);
+            if (s.startsWith("0")){
+                count++;
+                FileUtils.saveAsFileWriter(filePath+tableName+dataFileName,s,true);
+            }
+            if (i%10000==0){
+                System.out.println("排序数据，当前为"+i);
+            }
+        }
+        String indexFile = filePath + tableName + "//" + primary + indexFileName;
+        //写入索引
+        FileUtils.saveAsFileWriter(indexFile,"key:position:"+ count,false);
+        count=0;
         for (int i = 0; i < strings.size(); i++) {
             String s = strings.get(i);
             if (s.startsWith("0")){
                 String[] split = s.split("\\|");
                 String key = split[primaryPosition+1];
-                jsonObject.put(key,i);
-                FileUtils.saveAsFileWriter(filePath+tableName+dataFileName,s,true);
+                FileUtils.saveAsFileWriter(indexFile,key+":"+count,true);
+                count++;
+            }
+            if (i%10000==0){
+                System.out.println("写入索引,当前为"+i);
             }
         }
-        FileUtils.saveAsFileWriter(filePath+tableName+indexFileName,jsonObject.toJSONString(),false);
+    }
+
+    public static String selectByPrimaryIndexKey(String tableName, String key) throws IOException {
+        //优化为二分法查找
+        String primary = getPrimary(tableName);
+        String indexFile = filePath + tableName + "//" + primary + indexFileName;
+        List<String> list = FileUtils.readFileToLineGoLine(indexFile, 0, 1);
+        String[] split = list.get(0).split(":");
+        int max = Integer.parseInt(split[2]);
+        int  i = binarySearch(1, max, key, indexFile);
+        if (i==-1){
+            return null;
+        }
+        String s = FileUtils.readLine(filePath + tableName + dataFileName, i);
+        return s;
+    }
+
+    public static String selectByPrimaryKey(String tableName, String key) throws IOException {
+       return  FileUtils.selectDataByPrimary(filePath + tableName + dataFileName, key, getPrimaryPosition(tableName));
+    }
+    /**
+     * 二分法查找
+     * @param min
+     * @param max
+     * @param key
+     * @param filePath
+     * @return
+     */
+    public static int binarySearch(int min,int max,String key,String filePath){
+        int middle = (max + min) / 2;
+        if (max>min){
+            int minIndex = getLineIndex(filePath, min);
+            int maxIndex = getLineIndex(filePath, max);
+            int keyIndex = Integer.parseInt(key);
+            if (keyIndex==minIndex){
+                return min;
+            }else if (keyIndex==maxIndex){
+                return max;
+            }
+            if (keyIndex<minIndex||keyIndex>maxIndex){
+                return -1;
+            }
+            else {
+
+                int middleIndex = getLineIndex(filePath, middle);
+                if (middleIndex>keyIndex){
+                    return binarySearch(min,middle,key,filePath);
+                }else  if (middleIndex<keyIndex){
+                    return binarySearch(middle,max,key,filePath);
+                }
+                else {
+                    return middle;
+                }
+            }
+        }
+        else {
+            int minIndex = getLineIndex(filePath, min);
+            int maxIndex = getLineIndex(filePath, max);
+            int keyIndex = Integer.parseInt(key);
+            if (keyIndex==minIndex){
+                return min;
+            }
+            if (keyIndex==maxIndex){
+                return max;
+            }
+        }
+        return -1;
+
+    }
+
+    public static int  getLineIndex(String filePath,int line){
+        String s = FileUtils.readLine(filePath, line);
+        String[] split = s.split(":");
+        String s1 = split[0];
+        int i = Integer.parseInt(s1);
+        return i;
     }
 }

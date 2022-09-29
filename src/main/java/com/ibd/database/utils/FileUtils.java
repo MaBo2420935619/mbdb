@@ -9,6 +9,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 public class FileUtils {
     public static void saveAsFileWriter(String filePath, String content,boolean override) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            try {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         FileWriter fwriter = null;
         try {
             // true表示不覆盖原来的内容，而是加到文件的后面。若要覆盖原来的内容，直接省略这个参数就好
@@ -76,6 +86,12 @@ public class FileUtils {
                 .collect(Collectors.toList());
         return collect;
     }
+
+    public  static String readLine(String file , int line) {
+        List<String> list = readFileToLineGoLine(file, line, 1);
+        return list.get(0);
+    }
+
     /**
      * delete data
      * @param fileName
@@ -120,8 +136,46 @@ public class FileUtils {
                 e.printStackTrace();
             }
         }
-
         return count;
+    }
+
+
+    public static String selectDataByPrimary(String fileName, String key,int primaryPosition) {
+        RandomAccessFile raf = null;
+        int count=0;
+        try {
+            raf = new RandomAccessFile(fileName, "rw");
+            // 记住上一次的偏移量
+            long lastPoint = 0;
+            String line= new String(raf.readLine().getBytes("iso-8859-1"));
+            while (line != null) {
+                // 文件当前偏移量
+                final long ponit = raf.getFilePointer();
+                // 查找要替换的内容
+                boolean update=false;
+                String[] split = line.split("\\|");
+                String s1 = split[primaryPosition + 1];
+                if (s1.equals(key)){
+                    return line;
+                }
+                lastPoint = ponit;
+                String s = raf.readLine();
+                if (s!=null){
+                    line= new String(s.getBytes("iso-8859-1"));
+                }else {
+                    line=null;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                raf.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     public static List<String> getValueByLike(String path,String value){
