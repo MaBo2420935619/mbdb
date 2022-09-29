@@ -13,7 +13,7 @@ public class DataBaseController {
      */
     public static void createData(){
         JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < 500000; i++) {
+        for (int i = 0; i < 2000000; i++) {
             JSONObject js = new JSONObject();
             int num = RandUtils.num(10, 30);
             String chinese = RandUtils.getChinese();
@@ -27,13 +27,13 @@ public class DataBaseController {
     }
 
     public static void main(String[] args) throws IOException {
-//        createData();
-        System.out.println(new Date());
-        String key = DefinitionService.selectByPrimaryIndexKey("user1", "406412");
-        System.out.println(key);
-        System.out.println(new Date());
-        String user1 = DefinitionService.selectByPrimaryKey("user1", "406412");
-        System.out.println(user1);
-        System.out.println(new Date());
+        createData();
+//        System.out.println(new Date());
+//        String key = DefinitionService.selectByPrimaryIndexKey("user1", "406412");
+//        System.out.println(key);
+//        System.out.println(new Date());
+//        String user1 = DefinitionService.selectByPrimaryKey("user1", "406412");
+//        System.out.println(user1);
+//        System.out.println(new Date());
     }
 }

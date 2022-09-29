@@ -225,9 +225,9 @@ public class DefinitionService {
         return null;
     }
 
-//    public static void main(String[] args) {
-//        createIndexByPrimary("user1");
-//    }
+    public static void main(String[] args) {
+        createIndexByPrimary("user1");
+    }
 
     public static void createIndexByPrimary(String tableName) {
         int primaryPosition = getPrimaryPosition(tableName);
