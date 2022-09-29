@@ -16,10 +16,7 @@ public class DataBaseController {
 
         JSONArray jsonArray = new JSONArray();
 
-        for (int i = 0; i < 5000000; i++) {
-            if (i%10000==0){
-                System.out.println("当前为"+i);
-            }
+        for (int i = 0; i < 500000; i++) {
             JSONObject js = new JSONObject();
             int num = RandUtils.num(10, 30);
             String chinese = RandUtils.getChinese();
@@ -35,11 +32,11 @@ public class DataBaseController {
     public static void main(String[] args) throws IOException {
 //        createData();
         System.out.println(new Date());
-        List<String> user1 = DefinitionService.getValueByLike("user1", "20000");
-        System.out.println(user1);
-        System.out.println(new Date());
-        String key = DefinitionService.selectByPrimaryKey("user1", "20000");
+        String key = DefinitionService.selectByPrimaryKey("user1", "11057");
         System.out.println(key);
+        System.out.println(new Date());
+        String user1 = DefinitionService.selectByPrimaryByAll("user1", "11057");
+        System.out.println(user1);
         System.out.println(new Date());
     }
 }

@@ -106,21 +106,21 @@ public class DefinitionService {
         }
         return -1;
     }
-    public static void main(String[] args) {
-        JSONObject js = new JSONObject();
-        js.put("id","1006");
-        js.put("userName","张三");
-        js.put("userAge","10");
-        JSONObject js1 = new JSONObject();
-        js1.put("id","1003");
-        js1.put("userName","王五");
-        js1.put("userAge","12");
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.add(js);
-        jsonArray.add(js1);
-        int user = DefinitionService.insert(jsonArray, "user1");
-        System.out.println(user);
-    }
+//    public static void main(String[] args) {
+//        JSONObject js = new JSONObject();
+//        js.put("id","1006");
+//        js.put("userName","张三");
+//        js.put("userAge","10");
+//        JSONObject js1 = new JSONObject();
+//        js1.put("id","1003");
+//        js1.put("userName","王五");
+//        js1.put("userAge","12");
+//        JSONArray jsonArray = new JSONArray();
+//        jsonArray.add(js);
+//        jsonArray.add(js1);
+//        int user = DefinitionService.insert(jsonArray, "user1");
+//        System.out.println(user);
+//    }
     public static int insert(JSONArray jsonArray,String tableName){
         List<String> collNames = getCollNames(tableName);
         File file = new File(filePath+tableName + dataFileName);
@@ -151,6 +151,10 @@ public class DefinitionService {
                 }
             }
             FileUtils.saveAsFileWriter(file.getAbsolutePath(),data,true);
+            if (i%10000==0){
+                System.out.println("当前为"+i);
+            }
+
         }
         createIndexByPrimary(tableName);
         return jsonArray.size();
@@ -206,6 +210,29 @@ public class DefinitionService {
         List<String> strings1 = FileUtils.readFileToLineGoLine(filePath + tableName + dataFileName, line+1, 1);
         return strings1.get(0);
     }
+
+    public static String selectByPrimaryByAll(String tableName,String value) throws IOException {
+        String line="";
+        int i=0;
+        do{
+            List<String> strings1 = FileUtils.readFileToLineGoLine(filePath + tableName + dataFileName, i, 1);
+            String s = strings1.get(0);
+            int primaryPosition = getPrimaryPosition(tableName);
+            String[] split = s.split("\\|");
+            if (split[primaryPosition+1].equals(value)){
+                return s;
+            }
+            i++;
+            if (i%10000==0){
+                System.out.println("当前为"+i);
+            }
+        }while (line.equals(""));
+        return null;
+    }
+
+//    public static void main(String[] args) {
+//        createIndexByPrimary("user1");
+//    }
 
     public static void createIndexByPrimary(String tableName) {
         int primaryPosition = getPrimaryPosition(tableName);
