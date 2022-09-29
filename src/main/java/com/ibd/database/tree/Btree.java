@@ -15,7 +15,7 @@ public class Btree {
     //头结点
     private Node head;
 
-    Btree(int rank) {
+    public Btree(int rank) {
         this.rank = rank;
     }
 
@@ -192,7 +192,7 @@ public class Btree {
 
 
     //打印B+树
-    void printBtree(Node root) {
+   public  void printBtree(Node root) {
         if (root == this.root) {
             //打印根节点内的元素
             printNode(root);

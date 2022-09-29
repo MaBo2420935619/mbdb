@@ -1,5 +1,8 @@
 package com.ibd.database.utils;
 
+import com.ibd.database.tree.Btree;
+import com.ibd.database.tree.KeyAndValue;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,6 +69,34 @@ public class FileUtils {
         return null;
     }
 
+    /**
+     * 读取索引
+     */
+    public static Btree readFileIndex(String path){
+        // 使用一个字符串集合来存储文本中的路径 ，也可用String []数组
+        Btree btree = new Btree(4 );
+        try {
+            FileInputStream fis = new FileInputStream(path);
+            // 防止路径乱码   如果utf-8 乱码  改GBK     eclipse里创建的txt  用UTF-8，在电脑上自己创建的txt  用GBK
+            InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+            BufferedReader br = new BufferedReader(isr);
+            String line = "";
+            while ((line = br.readLine()) != null) {
+                if (!line.equals("")){
+                    String[] split = line.split("\\|");
+                    KeyAndValue keyAndValue = new KeyAndValue(Integer.parseInt(split[0]),Long.valueOf(split[1]));
+                    btree.insert(keyAndValue);
+                }
+            }
+            br.close();
+            isr.close();
+            fis.close();
+            return btree;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * @param file 文件路径
      * @param startLine 第n行开始读，Java 下标为 0
@@ -201,4 +232,5 @@ public class FileUtils {
         }
         return null;
     }
+
 }

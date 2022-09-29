@@ -11,28 +11,28 @@ public class DataBaseController {
     /**
      * 测试50万条数据
      */
-    public static void createData(){
+    public static void createData1(){
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < 2000000; i++) {
             JSONObject js = new JSONObject();
             int num = RandUtils.num(10, 30);
-            String chinese = RandUtils.getChinese();
+            String chinese = RandUtils.name();
             js.put("id",i);
             js.put("userName",chinese);
             js.put("userAge",num);
             jsonArray.add(js);
         }
-        int user = DefinitionService.insert(jsonArray, "user1");
+        int user = DefinitionService.insert(jsonArray, "user2");
         System.out.println(user);
     }
 
     public static void main(String[] args) throws IOException {
 //        createData();
         System.out.println(new Date());
-        String key = DefinitionService.selectByPrimaryIndexKey("user1", "2410000");
+        String key = DefinitionService.selectByPrimaryIndexKey("user1", "130000");
         System.out.println(key);
         System.out.println(new Date());
-        String user1 = DefinitionService.selectByPrimaryKey("user1", "2410000");
+        String user1 = DefinitionService.selectByPrimaryKey("user1", "130000");
         System.out.println(user1);
         System.out.println(new Date());
     }
