@@ -82,8 +82,25 @@ public class TableService {
     }
 
     public static Boolean deleteByIndex(String tableName,String key){
+
+
         Long indexStart = getIndexStart(tableName, key);
-        return RandomAccessFileUtils.deleteByIndex(filePath+tableName+dataFileName, indexStart);
+        boolean b = RandomAccessFileUtils.deleteByIndex(filePath + tableName + dataFileName, indexStart);
+        List<String> list = FileUtils.readFile02(filePath + tableName + indexFileName);
+        //重新生成索引
+        String s1 = FileUtils.readLine(filePath + tableName + indexFileName, 0);
+        String[] split1 = s1.split("\\|");
+        int count = Integer.parseInt(split1[2]);
+        count=count-1;
+        FileUtils.saveAsFileWriter(filePath + tableName +indexFileName,"key|position|"+count,false);
+        for (int i = 0; i < list.size(); i++) {
+            String s = list.get(i);
+            String[] split = s.split("\\|");
+            if (!split[0].equals(key)){
+                FileUtils.saveAsFileWriter(filePath + tableName +indexFileName,s,true);
+            }
+        }
+        return b;
     }
 
     public static int updateByIndex(String tableName, String key, JSONObject value){
@@ -345,6 +362,6 @@ public class TableService {
 //        String user11 = selectByIndex("user", "5006");
 //        log.info("查询数据"+user11);
 
-        deleteByIndex("user", "7005");
+//        deleteByIndex("user", "7005");
     }
 }

@@ -13,8 +13,8 @@ public class ExampleController {
         ExampleController exampleController=new ExampleController();
 //        //创建表
 //        exampleController.createTable();
-//        //添加数据
-//        exampleController.insert();
+        //添加数据
+        exampleController.insert();
         //查询数据
         exampleController.select();
         //删除数据
