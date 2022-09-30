@@ -11,16 +11,15 @@ public class ExampleController {
     private String tableName="person";
     public static void main(String[] args) {
         ExampleController exampleController=new ExampleController();
-//        //创建表
+//        log.info("创建表:");
 //        exampleController.createTable();
-        //添加数据
+        log.info("添加数据:");
         exampleController.insert();
-        //查询数据
         exampleController.select();
-        //删除数据
+        log.info("删除数据:");
         exampleController.delete();
         exampleController.select();
-        //修改数据
+        log.info("修改数据:");
         exampleController.update();
         exampleController.select();
     }
@@ -54,7 +53,7 @@ public class ExampleController {
 
     public void insert(){
         JSONArray jsonArray = new JSONArray();
-        for (int i = 3000; i <40000; i++) {
+        for (int i = 3000; i <4000; i++) {
             JSONObject js = new JSONObject();
             int num = RandUtils.num(10, 30);
             String chinese = RandUtils.name();
@@ -68,23 +67,23 @@ public class ExampleController {
     }
 
     public void delete(){
-        TableService.deleteByIndex(tableName, "35165");
+        TableService.deleteByIndex(tableName, "3565");
     }
 
     public void update(){
-        String key="35165";
+        String key="3565";
         JSONObject js = new JSONObject();
         int num = RandUtils.num(10, 30);
         String chinese = RandUtils.name();
         js.put("id",key);
         js.put("userName",chinese);
         js.put("userAge",num);
-        TableService.updateByIndex(tableName, "35165",js);
+        TableService.updateByIndex(tableName, "3565",js);
     }
 
     public void select(){
         String key="35165";
-        String s = TableService.selectByIndex(tableName, "35165");
+        String s = TableService.selectByIndex(tableName, "3565");
         log.info("查询道德数据为:"+s);
     }
 }

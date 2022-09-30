@@ -82,6 +82,11 @@ public class TableService {
     }
 
     public static Boolean deleteByIndex(String tableName,String key){
+        String s2 = selectByIndex(tableName, key);
+        if (s2==null){
+            log.info("数据查询失败，无法删除"+key);
+            return false;
+        }
         Long indexStart = getIndexStart(tableName, key);
         boolean b = RandomAccessFileUtils.deleteByIndex(filePath + tableName + dataFileName, indexStart);
         List<String> list = FileUtils.readFile02(filePath + tableName + indexFileName);
@@ -102,16 +107,24 @@ public class TableService {
     }
 
     public static int updateByIndex(String tableName, String key, JSONObject value){
-        deleteByIndex(tableName, key);
-        JSONArray array = new JSONArray();
-        array.add(value);
-        int insert = insert(array, tableName);
-        return insert;
+        Boolean aBoolean = deleteByIndex(tableName, key);
+        if (aBoolean){
+            JSONArray array = new JSONArray();
+            array.add(value);
+            int insert = insert(array, tableName);
+            return insert;
+        }else {
+            return 0;
+        }
     }
 
     public static String selectByIndex(String tableName, String key) {
         //优化为二分法查找
         String indexFile = filePath + tableName + indexFileName;
+        File file=new File(indexFile);
+        if ( !file.exists()){
+            throw new RuntimeException("索引文件不存在，查找失败"+indexFile);
+        }
         List<String> list = FileUtils.readFileToLineGoLine(indexFile, 0, 1);
         String[] split = list.get(0).split("\\|");
         int max = Integer.parseInt(split[2]);
