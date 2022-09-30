@@ -33,3 +33,12 @@ mbdb删除数据采用逻辑删除，即将该条数据的标志位改为1，则
 ## 改
 mbdb支持根据主键修改数据，底层逻辑为首先删除改数据，再将需要修改的数据新增至数据文件（data.mbdb文件）
 
+# 数据存储结构介绍
+
+## 数据文件存储结构(data.mbdb)
+
+![image](https://user-images.githubusercontent.com/92293323/193223249-48245148-955f-4e5c-8757-bf9840c3f374.png)
+
+## 索引文件存储结构(index.mbdb)
+
+## 表结构(tableDefinition.mbdb)
