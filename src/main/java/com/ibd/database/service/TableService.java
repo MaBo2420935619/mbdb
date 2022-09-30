@@ -7,9 +7,7 @@ import com.ibd.database.utils.FileUtils;
 import com.ibd.database.utils.RandUtils;
 import com.ibd.database.utils.RandomAccessFileUtils;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 @Slf4j
@@ -17,11 +15,11 @@ public class TableService {
 
     private static String filePath="data//";
 
-    private static String definitionFileName ="//tableDefinition.mbDB";
+    private static String definitionFileName ="//tableDefinition.mbdb";
 
-    private static String dataFileName ="//data.mbDB";
+    private static String dataFileName ="//data.mbdb";
 
-    private static String indexFileName ="//index.mbDB";
+    private static String indexFileName ="//index.mbdb";
 
 
 
@@ -61,7 +59,7 @@ public class TableService {
             KeyAndValue keyAndValue = new KeyAndValue(key,insert);
             list.add(keyAndValue);
             if (i%10000==0){
-                System.out.println("当前为"+i);
+                log.info("新增数据当前条数为"+i);
             }
 
         }
@@ -336,25 +334,25 @@ public class TableService {
 
         String user1 = selectByIndex("user", "5006");
         log.info("查询数据"+user1);
-        for (int i = 7000; i <7050; i++) {
-            JSONObject js = new JSONObject();
-            int num = RandUtils.num(10, 30);
-            String chinese = RandUtils.name();
-            js.put("id",i);
-            js.put("userName",chinese);
-            js.put("userAge",num);
-            updateByIndex("user",String.valueOf(i),js);
-        }
-//        JSONObject js = new JSONObject();
-//        int num = RandUtils.num(10, 30);
-//        String chinese = RandUtils.name();
-//        js.put("id",5006);
-//        js.put("userName",chinese);
-//        js.put("userAge",num);
-//        updateByIndex("user","5006",js);
+//        for (int i = 7000; i <7050; i++) {
+//            JSONObject js = new JSONObject();
+//            int num = RandUtils.num(10, 30);
+//            String chinese = RandUtils.name();
+//            js.put("id",i);
+//            js.put("userName",chinese);
+//            js.put("userAge",num);
+//            updateByIndex("user",String.valueOf(i),js);
+//        }
+        JSONObject js = new JSONObject();
+        int num = RandUtils.num(10, 30);
+        String chinese = RandUtils.name();
+        js.put("id",5006);
+        js.put("userName",chinese);
+        js.put("userAge",num);
+        updateByIndex("user","5006",js);
 
-//        String user11 = selectByIndex("user", "5006");
-//        System.out.println(user11);
+        String user11 = selectByIndex("user", "5006");
+        log.info("查询数据"+user11);
 
 //        deleteByIndex("user", "7005");
     }

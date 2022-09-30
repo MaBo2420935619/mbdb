@@ -14,11 +14,11 @@ public class DefinitionService {
 
     private static String filePath="data//";
 
-    private static String definitionFileName ="//tableDefinition.mbDB";
+    private static String definitionFileName ="//tableDefinition.mbdb";
 
-    private static String dataFileName ="//data.mbDB";
+    private static String dataFileName ="//data.mbdb";
 
-    private static String indexFileName ="//index.mbDB";
+    private static String indexFileName ="//index.mbdb";
 
 //    public static void main(String[] args) {
 //        JSONObject js2 = new JSONObject();
