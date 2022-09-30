@@ -68,9 +68,14 @@ public class RandomAccessFileUtils {
         try {
             raf = new RandomAccessFile(fileName, "rw");
             raf.seek(start);
+            long startFile = raf.getFilePointer();
             String line= new String(raf.readLine().getBytes("iso-8859-1"));
+            if (line.startsWith("1")){
+                return true;
+            }
             //delete
             String str = line.replaceFirst("0", "1");
+            raf.seek(startFile);
             raf.write((str+"\n").getBytes());
             return true;
         } catch (Exception e) {
