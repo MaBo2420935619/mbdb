@@ -1,6 +1,14 @@
 # mbdb介绍
-mbdb是一个关系型数据库管理系统，由个人开发者马博（mabo）独立开发
-mbdb是一个关系型数据库管理系统，关系数据库将数据保存在不同的表中，而不是将所有数据放在一个大仓库内，这样就增加了速度并提高了灵活性
+mbdb是一个用Java实现的关系型数据库管理系统，由个人开发者马博（mabo）独立开发
+mbdb是一个关系型数据库管理系统，关系数据库将数据保存在不同目录下的表中，而不是将所有数据放在一个大仓库内，这样就增加了速度并提高了灵活性
+![image](https://user-images.githubusercontent.com/92293323/193221745-e9046dd1-e8f4-431b-9bf5-6fa396931abe.png)
+
+每个表的目录下有三个文件:
+data.mbdb存储数据
+index.mbdb存储索引
+tableDefinition.mbdb存储表结构信息
+![image](https://user-images.githubusercontent.com/92293323/193222174-a6b7012c-8671-4d06-b63d-b23d54a46563.png)
+
 
 # mbdb功能介绍
 
