@@ -32,7 +32,7 @@ public class TableService {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
                 String data="delete";
-                for (int j = 0; j < collNames.size()    ; j++) {
+                for (int j = 0; j < collNames.size(); j++) {
                     String s = collNames.get(j);
                     data+="|"+s;
                 }
@@ -48,11 +48,7 @@ public class TableService {
             for (int j = 0; j < collNames.size()    ; j++) {
                 String s = collNames.get(j);
                 String string = jsonObject.getString(s);
-                if (data.equals("")){
-                    data=string;
-                }else {
-                    data+="|"+string;
-                }
+                data+="|"+string;
             }
             Long insert = RandomAccessFileUtils.insert(file.getAbsolutePath(), data);
             int key = jsonObject.getInteger(primary);
@@ -317,18 +313,18 @@ public class TableService {
 
 
 
-//        JSONArray jsonArray = new JSONArray();
-//        for (int i = 1000; i <999999; i++) {
-//            JSONObject js = new JSONObject();
-//            int num = RandUtils.num(10, 30);
-//            String chinese = RandUtils.name();
-//            js.put("id",i);
-//            js.put("userName",chinese);
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 10; i <20; i++) {
+            JSONObject js = new JSONObject();
+            int num = RandUtils.num(10, 30);
+            String chinese = RandUtils.name();
+            js.put("id",i);
+            js.put("userName",chinese);
 //            js.put("userAge",num);
-//            jsonArray.add(js);
-//        }
-//        int user = TableService.insert(jsonArray, "user");
-//        System.out.println(user);
+            jsonArray.add(js);
+        }
+        int user = TableService.insert(jsonArray, "user");
+        System.out.println(user);
 
 
         log.info("开始查找数据");
