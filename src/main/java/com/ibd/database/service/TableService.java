@@ -318,7 +318,7 @@ public class TableService {
 
 
 //        JSONArray jsonArray = new JSONArray();
-//        for (int i = 7000; i <7100; i++) {
+//        for (int i = 1000; i <999999; i++) {
 //            JSONObject js = new JSONObject();
 //            int num = RandUtils.num(10, 30);
 //            String chinese = RandUtils.name();
@@ -331,8 +331,8 @@ public class TableService {
 //        System.out.println(user);
 
 
-
-        String user1 = selectByIndex("user", "5006");
+        log.info("开始查找数据");
+        String user1 = selectByIndex("user", "999991");
         log.info("查询数据"+user1);
 //        for (int i = 7000; i <7050; i++) {
 //            JSONObject js = new JSONObject();
@@ -343,16 +343,16 @@ public class TableService {
 //            js.put("userAge",num);
 //            updateByIndex("user",String.valueOf(i),js);
 //        }
-        JSONObject js = new JSONObject();
-        int num = RandUtils.num(10, 30);
-        String chinese = RandUtils.name();
-        js.put("id",5006);
-        js.put("userName",chinese);
-        js.put("userAge",num);
-        updateByIndex("user","5006",js);
-
-        String user11 = selectByIndex("user", "5006");
-        log.info("查询数据"+user11);
+//        JSONObject js = new JSONObject();
+//        int num = RandUtils.num(10, 30);
+//        String chinese = RandUtils.name();
+//        js.put("id",5006);
+//        js.put("userName",chinese);
+//        js.put("userAge",num);
+//        updateByIndex("user","5006",js);
+//
+//        String user11 = selectByIndex("user", "5006");
+//        log.info("查询数据"+user11);
 
 //        deleteByIndex("user", "7005");
     }
