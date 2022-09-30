@@ -1,7 +1,13 @@
 package com.ibd.database.tree;
 
 public class Main {
-    public static void main(String[] args) { Btree btree = new Btree(4 );KeyAndValue keyAndValue = new KeyAndValue(1,"123");KeyAndValue keyAndValue1 = new KeyAndValue(2,"123");KeyAndValue keyAndValue2 = new KeyAndValue(3,"123");KeyAndValue keyAndValue3 = new KeyAndValue(4,"123");KeyAndValue keyAndValue4 = new KeyAndValue(5,"123");
+    public static void main(String[] args) {
+        Btree btree = new Btree(4 );
+        KeyAndValue keyAndValue = new KeyAndValue(1,"123");
+        KeyAndValue keyAndValue1 = new KeyAndValue(2,"123");
+        KeyAndValue keyAndValue2 = new KeyAndValue(3,"123");
+        KeyAndValue keyAndValue3 = new KeyAndValue(4,"123");
+        KeyAndValue keyAndValue4 = new KeyAndValue(5,"123");
         KeyAndValue keyAndValue5 = new KeyAndValue(6,"123");
         KeyAndValue keyAndValue6 = new KeyAndValue(7,"12300");
         KeyAndValue keyAndValue7 = new KeyAndValue(8,"546");

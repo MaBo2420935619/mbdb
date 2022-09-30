@@ -28,7 +28,7 @@ public class KeyAndValue implements Comparable<KeyAndValue>{
         this.value = value;
     }
 
-    KeyAndValue(int key, Object value) {
+    public KeyAndValue(int key, Object value) {
         this.key = key;
         this.value = value;
     }
