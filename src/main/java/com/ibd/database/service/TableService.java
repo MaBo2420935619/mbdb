@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ibd.database.tree.KeyAndValue;
 import com.ibd.database.utils.FileUtils;
-import com.ibd.database.utils.RandUtils;
 import com.ibd.database.utils.RandomAccessFileUtils;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.*;
 @Slf4j
 public class TableService {
@@ -144,7 +142,6 @@ public class TableService {
     }
 
 
-
     public static Long getIndexStart(String tableName, String key) {
         //优化为二分法查找
         String indexFile = filePath + tableName + indexFileName;
@@ -267,7 +264,6 @@ public class TableService {
             String position = keyAndValue.getValue().toString();
             FileUtils.saveAsFileWriter(file.getAbsolutePath(),key+"|"+position,true);
         }
-
     }
 
 
@@ -320,7 +316,6 @@ public class TableService {
             }
         }
         return -1;
-
     }
 
     public static int  getLineIndex(String filePath,int line){
@@ -329,50 +324,5 @@ public class TableService {
         String s1 = split[0];
         int i = Integer.parseInt(s1);
         return i;
-    }
-
-    public static void main(String[] args) {
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-
-
-
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 3000; i <40000; i++) {
-            JSONObject js = new JSONObject();
-            int num = RandUtils.num(10, 30);
-            String chinese = RandUtils.name();
-            js.put("id",i);
-            js.put("userName",chinese);
-            js.put("userAge",num);
-            jsonArray.add(js);
-        }
-        int user = TableService.insert(jsonArray, "user");
-        System.out.println(user);
-
-
-        log.info("开始查找数据");
-        String user1 = selectByIndex("user", "50000");
-        log.info("查询数据"+user1);
-//        for (int i = 7000; i <7050; i++) {
-//            JSONObject js = new JSONObject();
-//            int num = RandUtils.num(10, 30);
-//            String chinese = RandUtils.name();
-//            js.put("id",i);
-//            js.put("userName",chinese);
-//            js.put("userAge",num);
-//            updateByIndex("user",String.valueOf(i),js);
-//        }
-//        JSONObject js = new JSONObject();
-//        int num = RandUtils.num(10, 30);
-//        String chinese = RandUtils.name();
-//        js.put("id",5006);
-//        js.put("userName",chinese);
-//        js.put("userAge",num);
-//        updateByIndex("user","5006",js);
-//
-//        String user11 = selectByIndex("user", "5006");
-//        log.info("查询数据"+user11);
-
-//        deleteByIndex("user", "7005");
     }
 }
