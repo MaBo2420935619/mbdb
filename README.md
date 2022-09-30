@@ -45,7 +45,7 @@ mbdb支持根据主键修改数据，底层逻辑为首先删除改数据，再�
 
 
 ## 表结构文件存储结构(tableDefinition.mbdb)
-表结构文件存储的时表结构的json字符串
+表结构文件存储的是表结构的json字符串
 
 [{"name":"userName","length":"10","remark":"用户姓名","type":"varchar","delete":"1","primary":"false"},{"name":"userAge","length":"10","remark":"用户年龄","type":"int","delete":"1","primary":"false"},{"name":"id","length":"10","remark":"ID","type":"char","delete":"1","primary":"true"}]
 
