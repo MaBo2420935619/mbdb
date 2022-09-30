@@ -82,8 +82,6 @@ public class TableService {
     }
 
     public static Boolean deleteByIndex(String tableName,String key){
-
-
         Long indexStart = getIndexStart(tableName, key);
         boolean b = RandomAccessFileUtils.deleteByIndex(filePath + tableName + dataFileName, indexStart);
         List<String> list = FileUtils.readFile02(filePath + tableName + indexFileName);
@@ -93,7 +91,7 @@ public class TableService {
         int count = Integer.parseInt(split1[2]);
         count=count-1;
         FileUtils.saveAsFileWriter(filePath + tableName +indexFileName,"key|position|"+count,false);
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 1; i < list.size(); i++) {
             String s = list.get(i);
             String[] split = s.split("\\|");
             if (!split[0].equals(key)){
