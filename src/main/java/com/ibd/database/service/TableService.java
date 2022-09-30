@@ -27,6 +27,11 @@ public class TableService {
         List<String> collNames = getCollNames(tableName);
         String primary = getPrimary(tableName);
         File file = new File(filePath+tableName + dataFileName);
+        File fileIndex = new File(filePath+tableName + indexFileName);
+        boolean hasIndex=true;
+        if (!fileIndex.exists()){
+            hasIndex=false;
+        }
         if (!file.exists()) {
             try {
                 file.getParentFile().mkdirs();
@@ -42,24 +47,37 @@ public class TableService {
             }
         }
         List<KeyAndValue> list=new ArrayList();
+        List<String> datas=new ArrayList();
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             String data="0";
-            for (int j = 0; j < collNames.size()    ; j++) {
+            for (int j = 0; j < collNames.size(); j++) {
                 String s = collNames.get(j);
                 String string = jsonObject.getString(s);
                 data+="|"+string;
             }
-            Long insert = RandomAccessFileUtils.insert(file.getAbsolutePath(), data);
             int key = jsonObject.getInteger(primary);
-            KeyAndValue keyAndValue = new KeyAndValue(key,insert);
+            if (hasIndex){
+                String s = selectByIndex(tableName, String.valueOf(key));
+                if (s!=null){
+                    throw new RuntimeException("主键重复,请检查，重复的主键为:"+key);
+                }
+            }
+            KeyAndValue keyAndValue = new KeyAndValue(key,"-1");
             list.add(keyAndValue);
+            datas.add(data);
+        }
+        List<KeyAndValue> objects = new ArrayList<>();
+        for (int i = 0; i < datas.size(); i++) {
+            String data = datas.get(i);
+            KeyAndValue keyAndValue1 = list.get(i);
+            Long insert = RandomAccessFileUtils.insert(file.getAbsolutePath(), data);
+            objects.add(new KeyAndValue(keyAndValue1.getKey(),insert));
             if (i%10000==0){
                 log.info("新增数据当前条数为"+i);
             }
-
         }
-        createIndex(tableName,list);
+        createIndex(tableName,objects);
         return jsonArray.size();
     }
 
@@ -97,33 +115,7 @@ public class TableService {
         return  FileUtils.selectDataByPrimary(filePath + tableName + dataFileName, key, getPrimaryPosition(tableName));
     }
 
-    //    public static void main(String[] args) {
-//        JSONObject js2 = new JSONObject();
-//        js2.put("primary","false");
-//        js2.put("name","id");
-//        js2.put("type","char");
-//        js2.put("length","10");
-//        js2.put("remark","ID");
-//        JSONObject js = new JSONObject();
-//        js.put("primary","false");
-//        js.put("name","userName");
-//        js.put("type","varchar");
-//        js.put("length","10");
-//        js.put("remark","用户姓名");
-//        JSONObject js1 = new JSONObject();
-//        js1.put("primary","false");
-//        js1.put("name","userAge");
-//        js1.put("type","int");
-//        js1.put("length","10");
-//        js1.put("remark","用户年龄");
-//        JSONArray jsonArray = new JSONArray();
-//        jsonArray.add(js);
-//        jsonArray.add(js1);
-//        jsonArray.add(js2);
-//        DefinitionService.createTable(jsonArray,"user");
-//        JSONArray user = DefinitionService.getTable("user");
-//        System.out.println(user);
-//    }
+
 
     public static Long getIndexStart(String tableName, String key) {
         //优化为二分法查找
@@ -232,6 +224,9 @@ public class TableService {
                     KeyAndValue keyAndValue = new KeyAndValue(Integer.parseInt(split[0]),split[1]);
                     index.add(keyAndValue);
                 }
+                if (i%1000==0){
+                    log.info("还需要将"+(strings.size()-i)+"写入索引");
+                }
             }
         }
         Collections.sort(index);
@@ -314,13 +309,13 @@ public class TableService {
 
 
         JSONArray jsonArray = new JSONArray();
-        for (int i = 10; i <20; i++) {
+        for (int i = 3000; i <40000; i++) {
             JSONObject js = new JSONObject();
             int num = RandUtils.num(10, 30);
             String chinese = RandUtils.name();
             js.put("id",i);
             js.put("userName",chinese);
-//            js.put("userAge",num);
+            js.put("userAge",num);
             jsonArray.add(js);
         }
         int user = TableService.insert(jsonArray, "user");
@@ -328,7 +323,7 @@ public class TableService {
 
 
         log.info("开始查找数据");
-        String user1 = selectByIndex("user", "999991");
+        String user1 = selectByIndex("user", "50000");
         log.info("查询数据"+user1);
 //        for (int i = 7000; i <7050; i++) {
 //            JSONObject js = new JSONObject();
@@ -350,6 +345,6 @@ public class TableService {
 //        String user11 = selectByIndex("user", "5006");
 //        log.info("查询数据"+user11);
 
-//        deleteByIndex("user", "7005");
+        deleteByIndex("user", "7005");
     }
 }

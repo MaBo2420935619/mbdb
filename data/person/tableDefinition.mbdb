@@ -1,0 +1,1 @@
+[{"name":"userName","length":"10","remark":"用户姓名","type":"varchar","delete":"1","primary":"false"},{"name":"userAge","length":"10","remark":"用户年龄","type":"int","delete":"1","primary":"false"},{"name":"id","length":"10","remark":"ID","type":"char","delete":"1","primary":"true"}]
