@@ -11,8 +11,8 @@ public class ExampleController {
     private String tableName="person";
     public static void main(String[] args) {
         ExampleController exampleController=new ExampleController();
-//        log.info("创建表:");
-//        exampleController.createTable();
+        log.info("创建表:");
+        exampleController.createTable();
         log.info("添加数据:");
         exampleController.insert();
         exampleController.select();
@@ -32,13 +32,13 @@ public class ExampleController {
         js2.put("remark","ID");
         JSONObject js = new JSONObject();
         js.put("primary","false");
-        js.put("name","userName");
+        js.put("name","name");
         js.put("type","varchar");
         js.put("length","10");
         js.put("remark","用户姓名");
         JSONObject js1 = new JSONObject();
         js1.put("primary","false");
-        js1.put("name","userAge");
+        js1.put("name","age");
         js1.put("type","int");
         js1.put("length","10");
         js1.put("remark","用户年龄");
@@ -58,8 +58,8 @@ public class ExampleController {
             int num = RandUtils.num(10, 30);
             String chinese = RandUtils.name();
             js.put("id",i);
-            js.put("userName",chinese);
-            js.put("userAge",num);
+            js.put("name",chinese);
+            js.put("age",num);
             jsonArray.add(js);
         }
         int user = TableService.insert(jsonArray, tableName);
@@ -76,8 +76,8 @@ public class ExampleController {
         int num = RandUtils.num(10, 30);
         String chinese = RandUtils.name();
         js.put("id",key);
-        js.put("userName",chinese);
-        js.put("userAge",num);
+        js.put("name",chinese);
+        js.put("age",num);
         TableService.updateByIndex(tableName, "3565",js);
     }
 

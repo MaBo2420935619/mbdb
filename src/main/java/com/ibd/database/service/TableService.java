@@ -48,6 +48,9 @@ public class TableService {
         List<String> datas=new ArrayList();
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if (jsonObject.getString(primary)==null){
+                throw new RuntimeException("主键不存在"+jsonObject);
+            }
             String data="0";
             for (int j = 0; j < collNames.size(); j++) {
                 String s = collNames.get(j);
@@ -173,7 +176,7 @@ public class TableService {
                 e.printStackTrace();
             }
         }
-        FileUtils.saveAsFileWriter(file.getAbsolutePath(),table.toJSONString(),true);
+        FileUtils.saveAsFileWriter(file.getAbsolutePath(),table.toJSONString().toLowerCase(),true);
     }
 
     public static JSONArray getTable(String tableName){
