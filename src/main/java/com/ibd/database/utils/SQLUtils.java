@@ -13,37 +13,6 @@ import java.util.regex.Pattern;
 
 @Slf4j
 public class SQLUtils {
-    public static void main(String[] args) {
-        String sql="update person set  name=第二,age=1 where id=2" ;
-        try {
-            sql = sql.toLowerCase();
-            String tableName = subString(sql, "update", "set");
-            tableName=tableName.replace(" ","");
-            String[] s1 = sql.split("where");
-            String replace = s1[1].replace(" ", "");
-            String[] split = replace.split("\\=");
-            String s2 = subString(sql, "set", "where").replace(" ","");
-            String[] split1=s2.split(",");
-            JSONObject jsonObject = new JSONObject();
-            String s = TableService.selectByIndex(tableName, split[1]);
-            String[] split3 = s.split("\\|");
-            List<String> collNames = DefinitionService.getCollNames(tableName);
-            for (int i = 0; i < collNames.size(); i++) {
-                jsonObject.put(collNames.get(i),split3[i+1]);
-            }
-            for (int i = 0; i < split1.length; i++) {
-                String s3 = split1[i];
-                String[] split2 = s3.split("\\=");
-                jsonObject.put(split2[0],split2[1]);
-            }
-//            return s;
-            log.info(jsonObject.toJSONString());
-        } catch (Exception e) {
-            log.info(e.getMessage(),e);
-            throw new RuntimeException("sql is error :"+sql);
-        }
-    }
-
     public static String subString(String str, String strStart, String strEnd) {
         /* 找出指定的2个字符在 该字符串里面的 位置 */
         int strStartIndex = str.indexOf(strStart);
