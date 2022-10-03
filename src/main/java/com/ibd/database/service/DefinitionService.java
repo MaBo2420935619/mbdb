@@ -20,33 +20,6 @@ public class DefinitionService {
 
     private static String indexFileName ="//index.mbdb";
 
-//    public static void main(String[] args) {
-//        JSONObject js2 = new JSONObject();
-//        js2.put("primary","false");
-//        js2.put("name","id");
-//        js2.put("type","char");
-//        js2.put("length","10");
-//        js2.put("remark","ID");
-//        JSONObject js = new JSONObject();
-//        js.put("primary","false");
-//        js.put("name","userName");
-//        js.put("type","varchar");
-//        js.put("length","10");
-//        js.put("remark","用户姓名");
-//        JSONObject js1 = new JSONObject();
-//        js1.put("primary","false");
-//        js1.put("name","userAge");
-//        js1.put("type","int");
-//        js1.put("length","10");
-//        js1.put("remark","用户年龄");
-//        JSONArray jsonArray = new JSONArray();
-//        jsonArray.add(js);
-//        jsonArray.add(js1);
-//        jsonArray.add(js2);
-//        DefinitionService.createTable(jsonArray,"user1");
-//        JSONArray user = DefinitionService.getTable("user1");
-//        System.out.println(user);
-//    }
     public static void createTable(JSONArray array, String tableName){
         JSONArray table = new JSONArray();
         for (int i = 0; i < array.size(); i++) {
@@ -106,21 +79,6 @@ public class DefinitionService {
         }
         return -1;
     }
-//    public static void main(String[] args) {
-//        JSONObject js = new JSONObject();
-//        js.put("id","1006");
-//        js.put("userName","张三");
-//        js.put("userAge","10");
-//        JSONObject js1 = new JSONObject();
-//        js1.put("id","1003");
-//        js1.put("userName","王五");
-//        js1.put("userAge","12");
-//        JSONArray jsonArray = new JSONArray();
-//        jsonArray.add(js);
-//        jsonArray.add(js1);
-//        int user = DefinitionService.insert(jsonArray, "user1");
-//        System.out.println(user);
-//    }
     public static int insert(JSONArray jsonArray,String tableName){
         List<String> collNames = getCollNames(tableName);
         File file = new File(filePath+tableName + dataFileName);
@@ -166,14 +124,6 @@ public class DefinitionService {
         createIndexByPrimary(tableName);
         return i;
     }
-    //    public static void main(String[] args) {
-//        JSONObject js = new JSONObject();
-//        js.put("delete","0");
-//        js.put("userName","李四");
-//        js.put("userAge","10");
-//        int user = update("user","张三", js);
-//        System.out.println(user);
-//    }
     public static int update(String  tableName, String key,JSONObject data){
         int update = FileUtils.deleteData(filePath + tableName + dataFileName, key);
         JSONArray jsonArray = new JSONArray();
@@ -225,9 +175,6 @@ public class DefinitionService {
         return null;
     }
 
-    public static void main(String[] args) {
-        createIndexByPrimary("user1");
-    }
 
     public static void createIndexByPrimary(String tableName) {
         int primaryPosition = getPrimaryPosition(tableName);
