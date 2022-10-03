@@ -11,10 +11,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class SQLService {
-    public static void main(String[] args) {
-        SQLService service=new SQLService();
-        service.update("update person set  name=第二,age=121321 where id=2");
-    }
 
     public  void inset(String sql){
         checkSql(sql);
