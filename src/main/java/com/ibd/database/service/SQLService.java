@@ -8,11 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * sql语句管理类
- * @author : Bei-Zhen
- * @date : 2020-08-15 15:45
- */
 @Slf4j
 @Service
 public class SQLService {
