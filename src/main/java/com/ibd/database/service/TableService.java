@@ -74,7 +74,7 @@ public class TableService {
             KeyAndValue keyAndValue1 = list.get(i);
             Long insert = RandomAccessFileUtils.insert(file.getAbsolutePath(), data);
             objects.add(new KeyAndValue(keyAndValue1.getKey(),insert));
-            if (i%10000==0){
+            if ((i+1)%10000==0){
                 log.info("新增数据当前条数为"+i);
             }
         }

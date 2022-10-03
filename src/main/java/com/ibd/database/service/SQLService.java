@@ -13,7 +13,6 @@ import java.util.List;
 public class SQLService {
 
     public  void inset(String sql){
-        checkSql(sql);
         String tableName = null;
         JSONArray jsonArray = null;
         try {
@@ -39,21 +38,10 @@ public class SQLService {
         TableService.insert(jsonArray,tableName);
     }
 
-    //校检sql语句
-    public void checkSql(String sql) {
-        if(sql.startsWith("insert into") || sql.startsWith("Insert into")
-                || sql.startsWith("delete from") || sql.startsWith("Delete from")
-                || sql.startsWith("update") || sql.startsWith("Update")
-                || sql.startsWith("select") || sql.startsWith("Select")) {
-           throw new RuntimeException("sql error"+sql);
-        }
-    }
-
 
     //删除所有分割
     public void delete(String sql) {
         try {
-            checkSql(sql);
             sql = sql.toLowerCase();
             String tableName = SQLUtils.subString(sql, "from", "where");
             tableName=tableName.replace(" ","");
