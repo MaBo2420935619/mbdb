@@ -129,6 +129,9 @@ public class TableService {
         List<String> list = FileUtils.readFileToLineGoLine(indexFile, 0, 1);
         String[] split = list.get(0).split("\\|");
         int max = Integer.parseInt(split[2]);
+        if(max==0){
+            return null;
+        }
         int  i = binarySearch(1, max, key, indexFile);
         if (i==-1){
             return null;
